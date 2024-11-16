@@ -33,7 +33,51 @@ df.shape
 
 df.info()
 
-numeric_data = df.describe()
+df.describe()
+
+studio_name_count = pd.crosstab(index=df["studio_name"], columns="n", colnames=[""])
+
+df_runtime_in_minuts = df.sort_values("runtime_in_minuts", ascending= False)
+
+df_quant = df.quantile([.25,.5,.75])
+
+for col in df_quant.columns:  
+  iqr = df_quant[col][.75] - df_quant[col][.25]
+  lim_sup = df_quant[col][.75] + iqr * 1.5
+  lim_inf = df_quant[col][.25] - iqr * 1.5
+  
+  aux = np.array([])
+  
+  for val in df[col]:
+    if val > lim_sup:
+      aux = np.append(aux, "superior")
+    elif val < lim_inf:
+      aux = np.append(aux, "inferior")
+    else:
+      aux = np.append(aux, "normal")
+      
+  df[col + "_bp"] = aux
+
+
+df_runtime_in_minuts = df.sort_values("runtime_in_minuts", ascending= True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
